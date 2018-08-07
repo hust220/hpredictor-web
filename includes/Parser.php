@@ -1203,7 +1203,8 @@ class Parser
 		wfProfileIn( $fname.'-setup' );
 		static $tc = FALSE;
 		# the % is needed to support urlencoded titles as well
-		if ( !$tc ) { $tc = Title::legalChars() . '#%'; }
+        $tempTitle = new Title();
+		if ( !$tc ) { $tc = $tempTitle::legalChars() . '#%'; }
 
 		$sk =& $this->mOptions->getSkin();
 
@@ -1315,7 +1316,7 @@ class Parser
 				$link = substr($link, 1);
 			}
 
-			$nt = Title::newFromText( $this->unstripNoWiki($link, $this->mStripState) );
+			$nt = $tempTitle::newFromText( $this->unstripNoWiki($link, $this->mStripState) );
 			if( !$nt ) {
 				$s .= $prefix . '[[' . $line;
 				continue;
@@ -1940,8 +1941,9 @@ class Parser
 		wfProfileIn( $fname );
 		global $wgVariableIDs;
 		$this->mVariables = array();
+        $tempMagicWord = new MagicWord();
 		foreach ( $wgVariableIDs as $id ) {
-			$mw =& MagicWord::get( $id );
+			$mw =& $tempMagicWord::get( $id );
 			$mw->addToArray( $this->mVariables, $id );
 		}
 		wfProfileOut( $fname );
@@ -1971,7 +1973,8 @@ class Parser
 		$fname = 'Parser::replaceVariables';
 		wfProfileIn( $fname );
 
-		$titleChars = Title::legalChars();
+        $tempTitle = new Title();
+		$titleChars = $tempTitle::legalChars();
 
 		# This function is called recursively. To keep track of arguments we need a stack:
 		array_push( $this->mArgStack, $args );
@@ -1998,6 +2001,7 @@ class Parser
 	 * @access private
 	 */
 	function variableSubstitution( $matches ) {
+        $tempMagicWord = new MagicWord();
 		$fname = 'parser::variableSubstitution';
 		$varname = $matches[1];
 		wfProfileIn( $fname );
@@ -2007,7 +2011,7 @@ class Parser
 		$skip = false;
 		if ( $this->mOutputType == OT_WIKI ) {
 			# Do only magic variables prefixed by SUBST
-			$mwSubst =& MagicWord::get( MAG_SUBST );
+			$mwSubst =& $tempMagicWord::get( MAG_SUBST );
 			if (!$mwSubst->matchStartAndRemove( $varname ))
 				$skip = true;
 			# Note that if we don't substitute the variable below,
@@ -2062,6 +2066,7 @@ class Parser
 	 */
 	function braceSubstitution( $matches ) {
 		global $wgLinkCache, $wgContLang;
+        $tempMagicWord = new MagicWord();
 		$fname = 'Parser::braceSubstitution';
 		wfProfileIn( $fname );
 
@@ -2070,6 +2075,7 @@ class Parser
 		$noparse = false;
 
 		$title = NULL;
+        $tempTitle = new Title();
 
 		# Need to know if the template comes at the start of a line,
 		# to treat the beginning of the template like the beginning
@@ -2094,7 +2100,7 @@ class Parser
 
 		# SUBST
 		if ( !$found ) {
-			$mwSubst =& MagicWord::get( MAG_SUBST );
+			$mwSubst =& $tempMagicWord::get( MAG_SUBST );
 			if ( $mwSubst->matchStartAndRemove( $part1 ) xor ($this->mOutputType == OT_WIKI) ) {
 				# One of two possibilities is true:
 				# 1) Found SUBST but not in the PST phase
@@ -2109,17 +2115,17 @@ class Parser
 		# MSG, MSGNW and INT
 		if ( !$found ) {
 			# Check for MSGNW:
-			$mwMsgnw =& MagicWord::get( MAG_MSGNW );
+			$mwMsgnw =& $tempMagicWord::get( MAG_MSGNW );
 			if ( $mwMsgnw->matchStartAndRemove( $part1 ) ) {
 				$nowiki = true;
 			} else {
 				# Remove obsolete MSG:
-				$mwMsg =& MagicWord::get( MAG_MSG );
+				$mwMsg =& $tempMagicWord::get( MAG_MSG );
 				$mwMsg->matchStartAndRemove( $part1 );
 			}
 
 			# Check if it is an internal message
-			$mwInt =& MagicWord::get( MAG_INT );
+			$mwInt =& $tempMagicWord::get( MAG_INT );
 			if ( $mwInt->matchStartAndRemove( $part1 ) ) {
 				if ( $this->incrementIncludeCount( 'int:'.$part1 ) ) {
 					$text = $linestart . wfMsgReal( $part1, $args, true );
@@ -2131,7 +2137,7 @@ class Parser
 		# NS
 		if ( !$found ) {
 			# Check for NS: (namespace expansion)
-			$mwNs = MagicWord::get( MAG_NS );
+			$mwNs = $tempMagicWord::get( MAG_NS );
 			if ( $mwNs->matchStartAndRemove( $part1 ) ) {
 				if ( intval( $part1 ) ) {
 					$text = $linestart . $wgContLang->getNsText( intval( $part1 ) );
@@ -2148,8 +2154,8 @@ class Parser
 
 		# LOCALURL and LOCALURLE
 		if ( !$found ) {
-			$mwLocal = MagicWord::get( MAG_LOCALURL );
-			$mwLocalE = MagicWord::get( MAG_LOCALURLE );
+			$mwLocal = $tempMagicWord::get( MAG_LOCALURL );
+			$mwLocalE = $tempMagicWord::get( MAG_LOCALURLE );
 
 			if ( $mwLocal->matchStartAndRemove( $part1 ) ) {
 				$func = 'getLocalURL';
@@ -2160,7 +2166,7 @@ class Parser
 			}
 
 			if ( $func !== '' ) {
-				$title = Title::newFromText( $part1 );
+				$title = $tempTitle::newFromText( $part1 );
 				if ( !is_null( $title ) ) {
 					if ( $argc > 0 ) {
 						$text = $linestart . $title->$func( $args[0] );
@@ -2174,7 +2180,7 @@ class Parser
 
 		# GRAMMAR
 		if ( !$found && $argc == 1 ) {
-			$mwGrammar =& MagicWord::get( MAG_GRAMMAR );
+			$mwGrammar =& $tempMagicWord::get( MAG_GRAMMAR );
 			if ( $mwGrammar->matchStartAndRemove( $part1 ) ) {
 				$text = $linestart . $wgContLang->convertGrammar( $args[0], $part1 );
 				$found = true;
@@ -2212,10 +2218,10 @@ class Parser
 			if ($subpage !== '') {
 				$ns = $this->mTitle->getNamespace();
 			}
-			$title = Title::newFromText( $part1, $ns );
+			$title = $tempTitle::newFromText( $part1, $ns );
 
                         if ($title) {
-                            $interwiki = Title::getInterwikiLink($title->getInterwiki());
+                            $interwiki = $tempTitle::getInterwikiLink($title->getInterwiki());
                             if ($interwiki != '' && $title->isTrans()) {
                                     return $this->scarytransclude($title, $interwiki);
                             }
@@ -2451,6 +2457,7 @@ class Parser
 	 */
 	function formatHeadings( $text, $isMain=true ) {
 		global $wgMaxTocLevel, $wgContLang, $wgLinkHolders, $wgInterwikiLinkHolders;
+        $tempMagicWord = new MagicWord();
 
 		$doNumberHeadings = $this->mOptions->getNumberHeadings();
 		$doShowToc = true;
@@ -2462,13 +2469,13 @@ class Parser
 		}
 
 		# Inhibit editsection links if requested in the page
-		$esw =& MagicWord::get( MAG_NOEDITSECTION );
+		$esw =& $tempMagicWord::get( MAG_NOEDITSECTION );
 		if( $esw->matchAndRemove( $text ) ) {
 			$showEditLink = 0;
 		}
 		# if the string __NOTOC__ (not case-sensitive) occurs in the HTML,
 		# do not add TOC
-		$mw =& MagicWord::get( MAG_NOTOC );
+		$mw =& $tempMagicWord::get( MAG_NOTOC );
 		if( $mw->matchAndRemove( $text ) ) {
 			$doShowToc = false;
 		}
@@ -2485,14 +2492,14 @@ class Parser
 		# if the string __TOC__ (not case-sensitive) occurs in the HTML,
 		# override above conditions and always show TOC at that place
 
-		$mw =& MagicWord::get( MAG_TOC );
+		$mw =& $tempMagicWord::get( MAG_TOC );
 		if($mw->match( $text ) ) {
 			$doShowToc = true;
 			$forceTocHere = true;
 		} else {
 			# if the string __FORCETOC__ (not case-sensitive) occurs in the HTML,
 			# override above conditions and always show TOC above first header
-			$mw =& MagicWord::get( MAG_FORCETOC );
+			$mw =& $tempMagicWord::get( MAG_FORCETOC );
 			if ($mw->matchAndRemove( $text ) ) {
 				$doShowToc = true;
 			}
@@ -2688,7 +2695,7 @@ class Parser
 			$i++;
 		}
 		if($forceTocHere) {
-			$mw =& MagicWord::get( MAG_TOC );
+			$mw =& $tempMagicWord::get( MAG_TOC );
 			return $mw->replace( $toc, $full );
 		} else {
 			return $full;
@@ -2702,6 +2709,7 @@ class Parser
 	function magicISBN( $text ) {
 		$fname = 'Parser::magicISBN';
 		wfProfileIn( $fname );
+        $tempTitle = new Title();
 
 		$a = split( 'ISBN ', ' '.$text );
 		if ( count ( $a ) < 2 ) {
@@ -2732,7 +2740,7 @@ class Parser
 			if ( '' == $num ) {
 				$text .= "ISBN $blank$x";
 			} else {
-				$titleObj = Title::makeTitle( NS_SPECIAL, 'Booksources' );
+				$titleObj = $tempTitle::makeTitle( NS_SPECIAL, 'Booksources' );
 				$text .= '<a href="' .
 				$titleObj->escapeLocalUrl( 'isbn='.$num ) .
 					"\" class=\"internal\">ISBN $isbn</a>";
@@ -2851,6 +2859,7 @@ class Parser
 	 */
 	function pstPass2( $text, &$user ) {
 		global $wgContLang, $wgLocaltimezone;
+        $tempMagicWord = new MagicWord();
 
 		# Variable replacement
 		# Because mOutputType is OT_WIKI, this will only process {{subst:xxx}} type tags
@@ -2916,7 +2925,7 @@ class Parser
 		# MAG_END (__END__) tag allows for trailing
 		# whitespace to be deliberately included
 		$text = rtrim( $text );
-		$mw =& MagicWord::get( MAG_END );
+		$mw =& $tempMagicWord::get( MAG_END );
 		$mw->matchAndRemove( $text );
 
 		return $text;
@@ -2989,6 +2998,8 @@ class Parser
 		global $wgUser, $wgLinkCache;
 		global $wgOutputReplace;
 
+        $tempTitle = new Title();
+
 		$fname = 'Parser::replaceLinkHolders';
 		wfProfileIn( $fname );
 
@@ -3055,7 +3066,7 @@ class Parser
 				# 1 = known
 				# 2 = stub
 				while ( $s = $dbr->fetchObject($res) ) {
-					$title = Title::makeTitle( $s->page_namespace, $s->page_title );
+					$title = $tempTitle::makeTitle( $s->page_namespace, $s->page_title );
 					$pdbk = $title->getPrefixedDBkey();
 					$wgLinkCache->addGoodLinkObj( $s->page_id, $title );
 
@@ -3187,6 +3198,7 @@ class Parser
 	function renderImageGallery( $text ) {
 		# Setup the parser
 		global $wgUser, $wgTitle;
+        $tempTitle = new Title();
 		$parserOptions = ParserOptions::newFromUser( $wgUser );
 		$localParser = new Parser();
 
@@ -3204,7 +3216,7 @@ class Parser
 			if ( count( $matches ) == 0 ) {
 				continue;
 			}
-			$nt = Title::newFromURL( $matches[1] );
+			$nt = $tempTitle::newFromURL( $matches[1] );
 			if( is_null( $nt ) ) {
 				# Bogus title. Ignore these so we don't bomb out later.
 				continue;
@@ -3230,6 +3242,7 @@ class Parser
 	function makeImage( &$nt, $options ) {
 		global $wgContLang, $wgUseImageResize;
 		global $wgUser, $wgThumbLimits;
+        $tempMagicWord = new MagicWord();
 
 		$align = '';
 
@@ -3245,13 +3258,13 @@ class Parser
 
 		$part = explode( '|', $options);
 
-		$mwThumb  =& MagicWord::get( MAG_IMG_THUMBNAIL );
-		$mwLeft   =& MagicWord::get( MAG_IMG_LEFT );
-		$mwRight  =& MagicWord::get( MAG_IMG_RIGHT );
-		$mwNone   =& MagicWord::get( MAG_IMG_NONE );
-		$mwWidth  =& MagicWord::get( MAG_IMG_WIDTH );
-		$mwCenter =& MagicWord::get( MAG_IMG_CENTER );
-		$mwFramed =& MagicWord::get( MAG_IMG_FRAMED );
+		$mwThumb  =& $tempMagicWord::get( MAG_IMG_THUMBNAIL );
+		$mwLeft   =& $tempMagicWord::get( MAG_IMG_LEFT );
+		$mwRight  =& $tempMagicWord::get( MAG_IMG_RIGHT );
+		$mwNone   =& $tempMagicWord::get( MAG_IMG_NONE );
+		$mwWidth  =& $tempMagicWord::get( MAG_IMG_WIDTH );
+		$mwCenter =& $tempMagicWord::get( MAG_IMG_CENTER );
+		$mwFramed =& $tempMagicWord::get( MAG_IMG_FRAMED );
 		$caption = '';
 
 		$width = $height = $framed = $thumb = false;
