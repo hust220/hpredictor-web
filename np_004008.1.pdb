@@ -1,0 +1,317 @@
+
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html>
+<head>
+
+  <!-- META tags -->
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="pragma" content="NO-CACHE" />
+  <meta http-equiv="expires" content="-1" />
+
+  <!-- favorites icon -->
+
+
+  <title>Welcome to the network.</title>
+
+
+  <link href="http://tag3med-mits.net.unc.edu:80/images/favicon.ico" rel="shortcut icon" type="image/ico" />
+
+
+
+  <link href="http://tag3med-mits.net.unc.edu:80/images/faviconAppleIDev.png" rel="apple-touch-icon" />
+
+
+  <!-- factory style sheet -->
+
+  <link href="http://tag3med-mits.net.unc.edu:80/css/portalStyle.css" rel="stylesheet" type="text/css" />
+  <style>
+        html{
+            background-color: #FFFFFF;
+        }
+        body{
+            background-color: #FFFFFF;
+            color: #414B56;
+        }
+
+        hr {
+            background-color: #414B56;
+            color: #414B56;
+        }
+
+        a, a:link, a:visited {
+            color: #414B56;
+        }
+
+        a:hover, a:active {
+            color: #6B9DD1;
+        }
+
+        #menubars ul li {
+            color: #FFFFFF;
+        }
+
+        #menubars ul li a,
+        #menubars ul li.lastItem a,
+        #menubars ul li.selectedLastItem a{
+            color: #FFFFFF;
+        }
+
+        #bottomMenuBar {
+            background-color: #414B56;
+        }
+
+        ul#bottomMenuBarMessage li {
+            color: #FFFFFF;
+        }
+
+        .logout a, .logout a:visited{
+            color: #FFFFFF;
+        }
+
+        .welcome{
+            color:#FFFFFF;
+        }
+
+        #footerBar{
+            border-top-color:#AAAAAA;
+            color:#414B56;
+        }
+
+        #copyright{
+            color:#414B56;
+        }
+
+        #copyright a:link {
+            color:#414B56;
+        }
+
+        #copyright a:visited {
+            color: #6B9DD1;
+        }
+
+        #copyright a:hover {
+            color: #6B9DD1;
+        }
+
+        .emphasis{
+            color:#414B56;
+        }
+
+        .violationSeperator{
+            border-bottom-color:#AAAAAA;
+        }
+
+        #violationOn{
+            color:#AAAAAA;
+        }
+
+        .scanProgress{
+            color:#414B56;
+        }
+
+        .progressBackground{
+            background-color:#6B9DD1;
+        }
+
+        div.smallish-progress-wrapper {
+            border-color: #414B56;
+        }
+
+        div.smallish-progress-text {
+            color: #AAAAAA;
+        }
+
+        #regLoginTable td{
+            border-color:#AAAAAA;
+        }
+
+        .adminTable th{
+            background-color:#414B56;
+            border-bottom-color:#414B56;
+            border-top-color:#414B56;
+        }
+
+        .adminTable th.adminTableLeft {
+            border-left-color:#414B56;
+        }
+
+        .adminTable th.adminTableRight{
+            border-right-color:#414B56;
+        }
+
+        .adminTable th a, .adminTable th a:visited, .adminTable th a:link, .adminTable th a:active{
+            color:#FFFFFF;
+            text-decoration:none;
+        }
+
+        .adminTable td{
+            border-bottom-color:#AAAAAA;
+            border-top-color:#AAAAAA;
+        }
+
+        .adminTable td.adminTableLeft {
+            border-left-color:#AAAAAA;
+        }
+
+        .adminTable td.adminTableRight{
+            border-right-color:#AAAAAA;
+        }
+
+        
+        #topMenuBar {
+            background-image: url(http://tag3med-mits.net.unc.edu:80/images/topbar_6B9DD1_FFFFFF.gif);
+        }
+
+        #bottomMenuBar {
+            background-image: url(http://tag3med-mits.net.unc.edu:80/images/bottombar_414B56_FFFFFF.gif);
+        }
+
+        #menubars ul li {
+            background-image: url(http://tag3med-mits.net.unc.edu:80/images/menudivider_FFFFFF.gif);
+        }
+
+        #menubars ul li a:hover,
+        #menubars ul li.selected a,
+        #menubars ul li a.selected,
+        #menubars ul li.selectedLastItem a {
+            background-image: url(http://tag3med-mits.net.unc.edu:80/images/menuselected_FFFFFF.gif);
+        }
+
+        #menubars selected a {
+            background-image: url(http://tag3med-mits.net.unc.edu:80/images/menuselected_FFFFFF.gif);
+        }
+        
+        
+        h1#logo a {
+            background-image: url(http://tag3med-mits.net.unc.edu:80/custom/images/its_logo.jpg);
+            height: 62px;
+        }
+
+        #logo{
+            min-height: 62px;
+        }
+
+        #submitDiv{
+            text-align:left;
+            text-decoration: underline;
+            color: #414B56;
+        }
+
+        #landingForm{
+            text-decoration: underline;
+            text-align:left;
+            color: #414B56;
+        }
+
+        .submit {
+            text-decoration: underline;
+            text-align:left;
+            background: transparent;
+            border-top: 0;
+            color: #414B56;
+            cursor:pointer;
+            border-right: 0;
+            border-bottom: 0;
+            border-left: 0;
+            display: inline;
+            margin: 0;
+            padding: 0;
+        }
+
+        *:first-child+html .submit {		/* hack needed for IE 7 */
+            border-bottom: 0;
+            text-decoration: underline;
+            color: #414B56;
+        }
+
+        * html .submit {			/* hack needed for IE 5/6 */
+            border-bottom: 0;
+            text-decoration: underline;
+            color: #414B56;
+        }
+  </style>
+
+  <!-- user style sheet -->
+  <link type="text/css" rel="stylesheet" href="http://tag3med-mits.net.unc.edu:80/custom/css/style.css" />
+
+
+
+</head>
+<body id='welcomePage' onload="" >
+  <div id='page' >
+
+    <div id='header' >
+        <h1 id='logo'> <a href='http://help.med.unc.edu' target='_blank'>UNC School of Medicine</a> </h1>
+    </div>
+
+
+
+
+    <div id='menubars'>
+      <div id='topMenuBar'>
+        <ul></ul>
+      </div> <!-- topMenuBar -->
+      <div id='bottomMenuBar'>
+        <span class='welcome'>Welcome to the network.</span>
+        <ul></ul>
+      </div> <!-- bottomMenuBar -->
+    </div> <!-- menubars -->
+
+
+    <div id='content' >
+      <br />
+      <div class='centered' >
+        <div class='topContent width100percent'>
+
+          <div id="submitDiv">
+            <form name="landingForm" id="landingForm" action="http://tag3med-mits.net.unc.edu:80/main" method="post">
+              <div>
+                <input name='landingSubmitted' type='hidden' value='true' />
+                <noscript>
+                  <input name='jsEnabled' type='hidden' value='false' />
+                </noscript>
+
+                <input name='dest' type='hidden' value='http://pdb.rcsb.org/pdb/files/np_004008.1.pdb'/>
+
+                <input name="submitInput" class="submit" type="submit"
+                       value="Please click here to connect to the network."
+                       onmouseover="this.style.color = '#6B9DD1';this.parentNode.parentNode.style.color = '#6B9DD1';"
+                       onmouseout="this.style.color = '#414B56';this.parentNode.parentNode.style.color = '#414B56';"/>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div> <!-- centered -->
+    </div> <!-- content -->
+
+
+
+
+  <div id='footer' >
+
+    <div id='foooterWrapper'>
+  
+      <div id='footerBar' >
+        <div id='copyright' >
+          The University of North Carolina at Chapel Hill | 919.962.HELP | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&copy; 2010 UNC Chapel Hill
+<a href='http://med.unc.edu/ois'>About Us</a> | <a href='http://help.med.unc.edu'>Contact Us</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div> <!-- Close for first div in header -->
+
+
+   <!-- doneTransitioning -->
+
+</body>
+</html>
+
